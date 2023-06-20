@@ -1,0 +1,1 @@
+docker exec keycloak /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/import --realm x509 --users realm_file

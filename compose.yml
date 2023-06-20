@@ -1,28 +1,31 @@
-  services:
-    keycloak:
-      image: quay.io/keycloak/keycloak:20.0.2
-      command: 
-        - "start-dev"
-        - "--https-client-auth=request"
-        - "--https-key-store-file=/genCerts/keystore.jks"
-        - "--https-key-store-password=changeit"
-        - "--https-trust-store-file=/genCerts/truststore.jks"
-        - "--https-trust-store-password=changeit"
-        - "--https-protocols=TLSv1.2,TLSv1.3"
-        - "--import-realm"
-      environment:
-        JAVA_OPTS_APPEND: "-Dcom.redhat.fips=false"
-        KC_HOSTNAME_STRICT: "false"
-        KEYCLOAK_ADMIN: admin
-        KEYCLOAK_ADMIN_PASSWORD: admin
-        KC_LOG_LEVEL: info,org.keycloak.authentication:trace
-        KC_FEATURES_DISABLED: admin2
-        KC_FEATURES: admin
-        KC_SPI_IMPORT_SINGLE_FILE_FILE: x509-realm-export.json
-      ports:
-        - 8080:8080
-        - 8443:8443
-      volumes:
-        - ./genCerts:/genCerts
-        - ./realm:/opt/keycloak/data/import
-
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.2
+    container_name: keycloak
+    command:
+      - "start-dev"
+      - "--https-client-auth=request"
+      - "--https-key-store-file=/genCerts/keystore.jks"
+      - "--https-key-store-password=changeit"
+      - "--https-trust-store-file=/genCerts/truststore.jks"
+      - "--https-trust-store-password=changeit"
+      - "--https-protocols=TLSv1.2,TLSv1.3"
+      - "--import-realm"
+      # - "--spi-truststore-file-file=/genCerts/truststore.jks"
+      # - "--spi-truststore-file-password=changeit"
+      # - "--spi-truststore-file-hostname-verification-policy=ANY"
+    environment:
+      JAVA_OPTS_APPEND: "-Dcom.redhat.fips=false"
+      KC_HOSTNAME_STRICT: "false"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_LOG_LEVEL: info,org.keycloak.authentication:trace
+      KC_FEATURES_DISABLED: admin2
+      KC_FEATURES: admin
+      KC_SPI_IMPORT_SINGLE_FILE_FILE: x509-realm.json
+    ports:
+      - 8080:8080
+      - 8443:8443
+    volumes:
+      - ./genCerts:/genCerts
+      - ./realm:/opt/keycloak/data/import
