@@ -11,3 +11,6 @@ genCerts/
 *.crt
 *.key
 *.jks
+
+
+.DS_Store
